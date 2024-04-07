@@ -1,0 +1,7 @@
+Academic_Art - 1073
+Art_Nouveau - 3035
+Japanese_Art - 2235
+Primitivism - 124
+Realism - 5225
+Symbolism - 1380
+Western_Medieval - 1158
