@@ -33,8 +33,8 @@ from tensorflow.keras import layers, models
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Define the directory containing your dataset
-train_dir = 'data'
-validation_dir = 'data'
+train_dir = 'train_data'
+validation_dir = 'validation_data'
 
 # Parameters
 batch_size = 1

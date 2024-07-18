@@ -49,7 +49,11 @@ def clip_0_1(image):
 
 
 # variances
+# reduce noise and ensure smoothness
 def high_pass_x_y(image):
+    #  ובכך לוכד את רכיבי התדירות הגבוהים האופקיים של התמונה.
+    # This difference highlights the changes (or edges) between neighboring columns, thus capturing the horizontal
+    # high-frequency components of the image.
     x_var = image[:, :, 1:, :] - image[:, :, :-1, :]
     y_var = image[:, 1:, :, :] - image[:, :-1, :, :]
 

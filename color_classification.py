@@ -1,144 +1,145 @@
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-import cv2
-from sklearn.cluster import KMeans
-
-# read image
-img = cv2.imread('colors.jpg')
-
-# convert from BGR to RGB
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-# get rgb values from image to 1D array
-r, g, b = cv2.split(img)
-r = r.flatten()
-g = g.flatten()
-b = b.flatten()
-
-# plotting
-fig = plt.figure()
-ax = Axes3D(fig)
-ax.scatter(r, g, b)
-plt.show()
-
-
-
-
-class DominantColors:
-    CLUSTERS = None
-    IMAGE = None
-    COLORS = None
-    LABELS = None
-
-    def __init__(self, image, clusters=3):
-        self.CLUSTERS = clusters
-        self.IMAGE = image
-
-    def dominantColors(self):
-        # read image
-        img = cv2.imread(self.IMAGE)
-
-        # convert to rgb from bgr
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-        # reshaping to a list of pixels
-        img = img.reshape((img.shape[0] * img.shape[1], 3))
-
-        # save image after operations
-        self.IMAGE = img
-
-        # using k-means to cluster pixels
-        kmeans = KMeans(n_clusters=self.CLUSTERS)
-        kmeans.fit(img)
-
-        # the cluster centers are our dominant colors.
-        self.COLORS = kmeans.cluster_centers_
-
-        # save labels
-        self.LABELS = kmeans.labels_
-
-        # returning after converting to integer from float
-        return self.COLORS.astype(int)
+# import numpy as np
+# from sklearn.cluster import KMeans
+# from skimage import io
+# import matplotlib.pyplot as plt
+#
+#
+# def dominant_colors(image_path, k):
+#     # Step 1: Load the image
+#     image = io.imread(image_path)
+#
+#     # Step 2: Reshape the image into a 2D array of pixels
+#     pixels = np.reshape(image, (-1, 3))
+#
+#     # Step 3: Apply KMeans clustering
+#     kmeans = KMeans(n_clusters=k, random_state=42)
+#     kmeans.fit(pixels)
+#
+#     # Step 4: Get the centroid colors
+#     centroid_colors = kmeans.cluster_centers_.astype(int)
+#
+#     # Step 5: Return the dominant K colors as a tuple of numbers
+#     dominant_colors_rgb = tuple(map(tuple, centroid_colors))
+#
+#     return dominant_colors_rgb
+#
+#
+# # Example usage:
+# image_path = "C:/Users/USER/Desktop/the_scream.jpg"
+# k = 3  # Number of dominant colors to extract
+# dominant_colors_tuple = dominant_colors(image_path, k)
+# print("Dominant colors (in RGB):", dominant_colors_tuple)
 
 
-img = 'colors.jpg'
-clusters = 5
-dc = DominantColors(img, clusters)
-colors = dc.dominantColors()
-print(colors)
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+# import numpy as np
+# from sklearn.cluster import KMeans
+# from skimage import io
+# import matplotlib.pyplot as plt
+#
+#
+# def dominant_colors(image_path, k):
+#     # Step 1: Load the image
+#     image = io.imread(image_path)
+#
+#     # Step 2: Reshape the image into a 2D array of pixels
+#     pixels = np.reshape(image, (-1, 3))
+#
+#     # Step 3: Apply KMeans clustering
+#     kmeans = KMeans(n_clusters=k, random_state=42)
+#     kmeans.fit(pixels)
+#
+#     # Step 4: Get the centroid colors
+#     centroid_colors = kmeans.cluster_centers_.astype(int)
+#
+#     # Step 5: Return the dominant K colors as a tuple of numbers
+#     dominant_colors_rgb = tuple(map(tuple, centroid_colors))
+#
+#     # Visualization
+#     plt.figure(figsize=(8, 6))
+#     plt.subplot(1, 2, 1)
+#     plt.imshow(image)
+#     plt.title('Original Image')
+#     plt.axis('off')
+#
+#     plt.subplot(1, 2, 2)
+#     plt.title('Dominant Colors')
+#     for i, color in enumerate(centroid_colors):
+#         plt.fill_betweenx(y=[0, 1], x1=i, x2=i+1, color=color/255, edgecolor='none')
+#     plt.xticks([])
+#     plt.yticks([])
+#     plt.xlim(0, k)
+#
+#     plt.tight_layout()
+#     plt.show()
+#
+#     return dominant_colors_rgb
+#
+#
+# # Example usage:
+# image_path = "C:/Users/USER/Desktop/203576.jpg"
+# k = 3  # Number of dominant colors to extract
+# dominant_colors_tuple = dominant_colors(image_path, k)
+# print("Dominant colors (in RGB):", dominant_colors_tuple)
+#
 
-
-class DominantColors:
-
-    def rgb_to_hex(self, rgb):
-        return '#%02x%02x%02x' % (int(rgb[0]), int(rgb[1]), int(rgb[2]))
-
-    def plotClusters(self):
-        # plotting
-        fig = plt.figure()
-        ax = Axes3D(fig)
-        for label, pix in zip(self.LABELS, self.IMAGE):
-            ax.scatter(pix[0], pix[1], pix[2], color=self.rgb_to_hex(self.COLORS[label]))
-        plt.show()
-
-
-img = 'colors.jpg'
-clusters = 5
-dc = DominantColors(img, clusters)
-colors = dc.dominantColors()
-dc.plotClusters()
 
 import numpy as np
+from sklearn.cluster import KMeans
+from skimage import io
 import matplotlib.pyplot as plt
 
 
-class DominantColors:
+def dominant_colors(image_path, k):
+    # Step 1: Load the image
+    image = io.imread(image_path)
 
-    def plotHistogram(self):
-        # labels form 0 to no. of clusters
-        numLabels = np.arange(0, self.CLUSTERS + 1)
+    # Step 2: Reshape the image into a 2D array of pixels
+    pixels = np.reshape(image, (-1, 3))
 
-        # create frequency count tables
-        (hist, _) = np.histogram(self.LABELS, bins=numLabels)
-        hist = hist.astype("float")
-        hist /= hist.sum()
+    # Step 3: Apply KMeans clustering
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(pixels)
 
-        # appending frequencies to cluster centers
-        colors = self.COLORS
+    # Step 4: Get the centroid colors and labels for each pixel
+    centroid_colors = kmeans.cluster_centers_.astype(int)
+    labels = kmeans.labels_
 
-        # descending order sorting as per frequency count
-        colors = colors[(-hist).argsort()]
-        hist = hist[(-hist).argsort()]
+    # Step 5: Map each pixel to its closest centroid color
+    segmented_image = centroid_colors[labels].reshape(image.shape)
 
-        # creating empty chart
-        chart = np.zeros((50, 500, 3), np.uint8)
-        start = 0
+    # Visualization
+    plt.figure(figsize=(12, 6))
 
-        # creating color rectangles
-        for i in range(self.CLUSTERS):
-            end = start + hist[i] * 500
+    # Original image
+    plt.subplot(1, 3, 1)
+    plt.imshow(image)
+    plt.title('Original Image')
+    plt.axis('off')
 
-            # getting rgb values
-            r = colors[i][0]
-            g = colors[i][1]
-            b = colors[i][2]
+    # Dominant colors
+    plt.subplot(1, 3, 2)
+    plt.title('Dominant Colors')
+    for i, color in enumerate(centroid_colors):
+        plt.fill_betweenx(y=[0, 1], x1=i, x2=i+1, color=color/255, edgecolor='none')
+    plt.xticks([])
+    plt.yticks([])
+    plt.xlim(0, k)
 
-            # using cv2.rectangle to plot colors
-            cv2.rectangle(chart, (int(start), 0), (int(end), 50), (r, g, b), -1)
-            start = end
+    # Image with only dominant colors
+    plt.subplot(1, 3, 3)
+    plt.imshow(segmented_image)
+    plt.title('Image with Dominant Colors')
+    plt.axis('off')
 
-        # display chart
-        plt.figure()
-        plt.axis("off")
-        plt.imshow(chart)
-        plt.show()
+    plt.tight_layout()
+    plt.show()
+
+    return tuple(map(tuple, centroid_colors))
 
 
-img = 'colors.jpg'
-clusters = 5
-dc = DominantColors(img, clusters)
-colors = dc.dominantColors()
-dc.plotHistogram()
+# Example usage:
+image_path = "C:/Users/USER/Desktop/203576.jpg"
+k = 3  # Number of dominant colors to extract
+dominant_colors_tuple = dominant_colors(image_path, k)
+print("Dominant colors (in RGB):", dominant_colors_tuple)

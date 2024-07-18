@@ -29,7 +29,7 @@ that exudes the emotive fervor of Munch's masterpiece, harmoniously intertwined 
 towers.
 
 <div align='center'>
-  <img src='images/inputs/style/the_scream.jpg' height='174px'>
+  <img src='images/inputs/style/patterned_leaves.jpg' height='174px'>
   <img src='images/inputs/content/chicago.jpg' height="174px">
   <img src='images/outputs/generated_chicago.jpg' height="174px">
   <br>
